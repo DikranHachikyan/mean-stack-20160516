@@ -1,20 +1,19 @@
 var express = require('express');
 var mongoose = require('mongoose');
+var ejs  = require('ejs');
 var config = require('./config/');
-var db = require('./models');
+
+var router = require('./routes/');
 
 var app = express();
 
 mongoose.connect(config.MONGO_URI);
 
 
-app.set('view engine', 'ejs');
+app.engine('html', ejs.renderFile );
+app.set('view engine', 'html');
 app.set('views', './views');
 
-app.get('/',function(req,res,next){
-	db.getAllItems();
-    res.render('index');
-});//home page*/
 
 // Botstrap files
 app.use('/css', express.static( __dirname + '/node_modules/bootstrap/dist/css/'));
@@ -30,7 +29,9 @@ app.use('/js', express.static( __dirname + '/public/js/'));
 // --- images ---
 app.use('/images', express.static( __dirname + '/public/images/'));
 app.use('/images', express.static( __dirname + '/public/images/covers/'));
+//-------------------------------------------------------------------------
 
+app.use(router.index);
 
 var server = app.listen(3000, function(){
     console.log('Listen on port ' + this.address().port + '...');
