@@ -1,13 +1,30 @@
 <%- include('partials/header.html', {'title': title} ); %>
   <div class="container-fluid">
     <div class="row">
+      <div class="col-sm-12">
+        <%- include('partials/nav.html');%>
+      </div>
+    </div>  <!-- Nav row -->
+    <div class="row">
     <% if( typeof items !== 'undefined' && items.length > 0 ){ %>
-    <%- include('partials/list-items.html', {'items':items});%>
+
+      <%- include('partials/list-items.html', {'items':items});%>
+    
+    <% } else if( typeof navto !== 'undefined' && navto === 'login' ){ %>
+      <div class="col-sm-12">  
+        <%- include('partials/user-login-form.html');%>
+      </div>
+    <% } else if( typeof navto !== 'undefined' && navto === 'registration' ){ %>
+      <div class="col-sm-12">  
+      <%- include('partials/user-registration-form.html', {'error': error,'input':input});%>
+      </div>
     <% }else { %>
+    
       <div class="col-sm-12">
         <h1>Hello, world! <span class="glyphicon glyphicon-bell"></span></h1>
       </div>
+    
      <% } %> 
-    </div>
-  </div>
+    </div> <!-- main row -->
+  </div> 
 <%- include('partials/footer.html'); %>

@@ -2,6 +2,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 var ejs  = require('ejs');
 var config = require('./config/');
+var multer = require('multer');
 
 var router = require('./routes/');
 
@@ -15,6 +16,7 @@ app.set('view engine', 'html');
 app.set('views', './views');
 
 
+app.use(multer().array());
 // Botstrap files
 app.use('/css', express.static( __dirname + '/node_modules/bootstrap/dist/css/'));
 app.use('/fonts', express.static( __dirname + '/node_modules/bootstrap/dist/fonts/'));
@@ -32,6 +34,9 @@ app.use('/images', express.static( __dirname + '/public/images/covers/'));
 //-------------------------------------------------------------------------
 
 app.use(router.index);
+app.use(router.user);
+
+app.use(router.items);
 
 var server = app.listen(3000, function(){
     console.log('Listen on port ' + this.address().port + '...');
