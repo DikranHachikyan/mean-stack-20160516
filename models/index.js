@@ -1,4 +1,6 @@
 var mongoose  = require('mongoose');
+//var userCtrl  = require('../controllers/user-controller.js');
+
 var Schema    = mongoose.Schema;
 
 
@@ -7,6 +9,7 @@ var titleValidator = [function(value){
     }
     //Custom message
     , 'Title is required field'];
+
 var itemSchema = new Schema({
 		"_id":     {type: String,required: true},
         "category":{type: String,required: 'Category is required field' },
@@ -29,6 +32,19 @@ var userSchema = new Schema({
 var schemaObj = {};
 
 schemaObj.Item = mongoose.model('item', itemSchema );
-schemaObj.User = mongoose.model('user', userSchema );
+var _User = schemaObj.User = mongoose.model('user', userSchema );
+
+// --------------- Email validation ----------------------
+userSchema.path('email').validate(function(value,next){
+    _User.findOne({'email':value.toLowerCase() } , function(error,user){
+        if(error)
+        {
+            return next(false);
+        }
+        next(!user);
+    }); //find user
+} , 'That email already in use!');
+//------------------------------------------------------
+
 
 module.exports = schemaObj;

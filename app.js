@@ -3,10 +3,16 @@ var mongoose = require('mongoose');
 var ejs  = require('ejs');
 var config = require('./config/');
 var multer = require('multer');
+var expressSession = require('express-session');
 
 var router = require('./routes/');
 
 var app = express();
+
+var passport = require('passport');
+var passportConfig = require('./auth/passport-config.js');
+
+passportConfig();
 
 mongoose.connect(config.MONGO_URI);
 
@@ -32,6 +38,15 @@ app.use('/js', express.static( __dirname + '/public/js/'));
 app.use('/images', express.static( __dirname + '/public/images/'));
 app.use('/images', express.static( __dirname + '/public/images/covers/'));
 //-------------------------------------------------------------------------
+
+app.use(expressSession({
+	secret: 'cat Beer',
+	saveUninitialized: false,
+	resave: true
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(router.index);
 app.use(router.user);

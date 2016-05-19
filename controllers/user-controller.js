@@ -2,11 +2,11 @@ var User = require('../models/').User;
 
 module.exports.addUser = function(req,res,next){
 	var user  = req.body;
-	
+	//console.log('add user:', user);
 	var newUser = new User({
 		'firstname': user.firstname,
 		'lastname' : user.lastname,
-		'email'    : user.email,
+		'email'    : user.email.toLowerCase(),
 		'password' : user.password
 	});
 
@@ -28,3 +28,9 @@ module.exports.addUser = function(req,res,next){
 		res.redirect('/items');
 	});
 };
+
+module.exports.findUser = function(email,next){
+	User.findOne({'email': email.toLowerCase() } , function(error,user){
+        next(error,user);
+    }); //find user
+};// find user
