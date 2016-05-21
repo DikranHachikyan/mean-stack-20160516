@@ -5,6 +5,13 @@
         <%- include('partials/nav.html');%>
       </div>
     </div>  <!-- Nav row -->
+    <% if( typeof firstname !== 'undefined' && firstname.trim() !== ''){ %>
+    <div class="row">
+      <div class="col-sm-12">
+        <h4>Hi, <%=firstname; %></h4>
+      </div>
+    </div>
+    <% } %>
     <div class="row">
     <% if( typeof items !== 'undefined' && items.length > 0 ){ %>
 

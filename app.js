@@ -5,6 +5,9 @@ var config = require('./config/');
 var multer = require('multer');
 var expressSession = require('express-session');
 
+var connectMongo = require('connect-mongo');
+var MongoStore   = connectMongo(expressSession);
+
 var router = require('./routes/');
 
 var app = express();
@@ -42,7 +45,10 @@ app.use('/images', express.static( __dirname + '/public/images/covers/'));
 app.use(expressSession({
 	secret: 'cat Beer',
 	saveUninitialized: false,
-	resave: true
+	resave: true,
+	store : new MongoStore({
+		mongooseConnection:mongoose.connection
+	})
 }));
 
 app.use(passport.initialize());

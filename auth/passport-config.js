@@ -2,6 +2,7 @@ module.exports = function(){
 	var passport = require('passport');
 	var passportLocal = require('passport-local');
     var userCtrl = require('../controllers/user-controller.js');
+    var bcrypt  = require('bcrypt');
 
     //-----------------------------------------------------------------
 	passport.use( new passportLocal.Strategy({usernameField:'email'}, 
@@ -14,12 +15,24 @@ module.exports = function(){
 								return next(error);
 							}
 							//user does not exist || password is incorrect
-							if( !user || user.password !== password)
+							if( !user ) //|| user.password !== password)
 							{
 								return next(null,null);
 							}
-							//Ok!
-							next(null, user);
+
+							bcrypt.compare( password, user.password, function(error, same){
+								if(error){
+									return next(error);
+								}
+								// password != user.password	
+								if( !same){
+									return next(null,null);
+								}
+
+								//Ok!
+								next(null, user);
+							});//compare passwords (user.password - hash, password-plain text)
+
 						});//find user	
 	}));//passport use
 	//------------------------------------------------------------------

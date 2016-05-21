@@ -14,9 +14,24 @@ router.get('/user/login', function(req,res,next){
 	res.render('index', viewData);
 });
 //--------- Authenticate   ----------------------------
-router.post('/user/login', passport.authenticate('local') , function(req,res,next){
-	res.redirect('/items');
-});
+router.post('/user/login', 
+	function(req,res,next){
+		console.log(req.body);
+		if( req.body.remember)
+		{
+			//30 - days
+			//24 - hours
+			//3600 - sec
+			//1000 - ms
+			req.session.cookie.maxAge = 30 * 24 * 3600 * 1000; //ms
+		}
+		next();
+	}
+	,
+	passport.authenticate('local',{
+		failureRedirect: '/',
+		successRedirect:'/items'
+	}));
 //-------- User Registration --------------------------
 router.get('/user/register', function(req,res,next){
 	var viewData = {
@@ -31,10 +46,12 @@ router.get('/user/register', function(req,res,next){
 //------------ Add User -----------------------------
 router.post('/user/register', function(req,res,next){
 	return userCtrl.addUser(req,res,next); 
+	
 });
 //-------- User Logout --------------------------------
 router.get('/user/logout', function(req,res,next){
 	req.logout();
+	req.session.destroy();
 	res.redirect('/');
 });
 
