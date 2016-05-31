@@ -25,6 +25,7 @@ router.post('/user/login',
 			//1000 - ms
 			req.session.cookie.maxAge = 30 * 24 * 3600 * 1000; //ms
 		}
+		console.log('Post Login'); 
 		next();
 	}
 	,

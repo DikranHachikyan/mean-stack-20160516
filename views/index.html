@@ -13,11 +13,11 @@
     </div>
     <% } %>
     <div class="row">
-    <% if( typeof items !== 'undefined' && items.length > 0 ){ %>
-
-      <%- include('partials/list-items.html', {'items':items});%>
-    
-    <% } else if( typeof navto !== 'undefined' && navto === 'login' ){ %>
+     <% if( typeof navto !== 'undefined' && navto === 'items' ){ %>
+    <div class="col-sm-12">
+      <%- include('partials/list-items.html');%>
+    </div>
+    <% }else if( typeof navto !== 'undefined' && navto === 'login' ){ %>
       <div class="col-sm-12">  
         <%- include('partials/user-login-form.html');%>
       </div>

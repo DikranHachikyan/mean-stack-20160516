@@ -57,6 +57,8 @@ app.use(passport.session());
 app.use(router.index);
 app.use(router.user);
 
+//app.use( require('./auth/restrict-access.js'));
+//app.use(router.index);
 app.use(router.items);
 
 var server = app.listen(3000, function(){

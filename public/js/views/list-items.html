@@ -1,0 +1,16 @@
+<div class="row">
+<div ng-show="$index != 0 && $index % 3 == 0" class="clearfix"  ng-repeat-start="item in items"></div>
+	<div class="col-sm-4"  ng-repeat-end>
+		<header>
+			<h3>{{item.title}}</h3>
+		</header>
+		<section>
+			<img ng-src="/images/covers/{{item.artwork}}" alt="{{item.title}}">
+			<p>{{item.description}}</p>
+		</section>
+		<footer>
+			<a href="#" class="btn btn-primary">Details</a>
+		</footer>
+	</div>
+
+</div>
